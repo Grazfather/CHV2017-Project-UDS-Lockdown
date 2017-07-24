@@ -110,18 +110,10 @@ bool tp_link_send(struct tp_link_handle *handle,
  */
 bool tp_link_recv(struct tp_link_handle *handle, struct tp_link_frame *frame)
 {
-    //readBus(handle->bus);
-    //if (readQueue.isEmpty()) {
-        //return false;
-    //}
-
-    // Gross :( Keep trying for 100ms
-    int tries = 0;
-    while (readQueue.isEmpty() || tries < 10) {
-            readBus(handle->bus);
-            delay(10);
-            tries++;
-    }
+	readBus(handle->bus);
+	if (readQueue.isEmpty()) {
+		return false;
+	}
 
     Message msg = readQueue.pop();
     memcpy(frame->data, msg.frame_data, TP_LINK_MAX_LEN);
